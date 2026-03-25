@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { type TreeStage } from '@/lib/mockData';
-import { useEffect, useState } from 'react';
+import { Heart, AlertTriangle } from 'lucide-react';
 
 interface TreeVisualizationProps {
   stage: TreeStage;
@@ -129,13 +129,11 @@ const FullTree = () => (
         <ellipse cx="260" cy="248" rx="25" ry="20" className="fill-primary" opacity={0.6} />
         <ellipse cx="200" cy="125" rx="55" ry="40" className="fill-primary" opacity={0.5} />
       </motion.g>
-      {/* Pulsing fruits */}
       <motion.circle cx="170" cy="160" r="5" className="fill-secondary" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 2, repeat: Infinity }} />
       <motion.circle cx="230" cy="150" r="5" className="fill-secondary" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
       <motion.circle cx="200" cy="130" r="6" className="fill-secondary" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }} />
       <motion.circle cx="155" cy="190" r="4" className="fill-secondary" opacity={0.8} />
       <motion.circle cx="245" cy="185" r="4" className="fill-secondary" opacity={0.8} />
-      {/* Sparkles */}
       {[
         { cx: 180, cy: 120, delay: 0 }, { cx: 220, cy: 110, delay: 0.7 },
         { cx: 160, cy: 145, delay: 1.2 }, { cx: 240, cy: 140, delay: 0.4 },
@@ -155,7 +153,6 @@ const treeComponents: Record<TreeStage, React.FC> = {
   'small-tree': SmallTree, 'full-tree': FullTree,
 };
 
-// Health bar component
 const HealthBar = ({ health }: { health: number }) => {
   const barColor = health >= 70 ? 'hsl(152 55% 35%)' : health >= 40 ? 'hsl(42 80% 55%)' : 'hsl(0 72% 51%)';
   const label = health >= 70 ? 'Thriving' : health >= 40 ? 'Needs Care' : 'Wilting';
@@ -164,7 +161,7 @@ const HealthBar = ({ health }: { health: number }) => {
     <div className="w-full max-w-[280px]">
       <div className="flex justify-between items-center mb-1.5">
         <span className="text-xs font-medium text-muted-foreground flex items-center gap-1">
-          {health >= 70 ? '💚' : health >= 40 ? '💛' : '❤️‍🩹'} {label}
+          <Heart className="w-3 h-3" style={{ color: barColor }} /> {label}
         </span>
         <span className="text-xs font-bold" style={{ color: barColor }}>{health}%</span>
       </div>
@@ -192,8 +189,8 @@ const HealthBar = ({ health }: { health: number }) => {
 export const TreeVisualization = ({ stage, health, points }: TreeVisualizationProps) => {
   const TreeComponent = treeComponents[stage];
   const stageLabels: Record<TreeStage, string> = {
-    seed: '🌱 Seed', sprout: '🌿 Sprout', growing: '🌳 Growing',
-    'small-tree': '🌲 Small Tree', 'full-tree': '✨ Full Tree',
+    seed: 'Seed', sprout: 'Sprout', growing: 'Growing',
+    'small-tree': 'Small Tree', 'full-tree': 'Full Tree',
   };
 
   const showLeaves = health < 50;
@@ -214,10 +211,7 @@ export const TreeVisualization = ({ stage, health, points }: TreeVisualizationPr
             </radialGradient>
           </defs>
           <ellipse cx="200" cy="365" rx="150" ry="30" fill="url(#ground)" />
-
-          {/* Growth glow */}
           {health >= 50 && <GrowthGlow stage={stage} />}
-
           <AnimatePresence mode="wait">
             <motion.g
               key={stage}
@@ -229,25 +223,21 @@ export const TreeVisualization = ({ stage, health, points }: TreeVisualizationPr
               <TreeComponent />
             </motion.g>
           </AnimatePresence>
-
-          {/* Falling leaves on low health */}
           {showLeaves && [160, 190, 210, 240].map((x, i) => (
             <FallingLeaf key={i} delay={i * 0.7} x={x} />
           ))}
         </svg>
-
-        {/* Decay warning */}
         {health < 50 && (
           <motion.div
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-destructive/15 border border-destructive/30 backdrop-blur-sm"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-destructive/15 border border-destructive/30 backdrop-blur-sm flex items-center gap-1.5"
             animate={{ opacity: [0.7, 1, 0.7] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <span className="text-xs font-medium text-destructive">⚠️ Tree is wilting!</span>
+            <AlertTriangle className="w-3 h-3 text-destructive" />
+            <span className="text-xs font-medium text-destructive">Tree is wilting!</span>
           </motion.div>
         )}
       </div>
-
       <motion.div
         className="text-center space-y-1"
         initial={{ opacity: 0, y: 10 }}
@@ -257,7 +247,6 @@ export const TreeVisualization = ({ stage, health, points }: TreeVisualizationPr
         <p className="text-xl font-bold text-foreground">{stageLabels[stage]}</p>
         <p className="text-sm font-mono text-muted-foreground">{points} pts</p>
       </motion.div>
-
       <HealthBar health={health} />
     </div>
   );

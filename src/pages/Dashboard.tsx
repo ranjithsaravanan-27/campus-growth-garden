@@ -6,6 +6,7 @@ import { SquadPressureMeter } from '@/components/SquadPressureMeter';
 import { DailyMission } from '@/components/DailyMission';
 import { InsightCard } from '@/components/InsightCard';
 import { mockTeam, TREE_STAGES } from '@/lib/mockData';
+import { Zap, Users, GitCommit, PuzzleIcon, Trophy, Lightbulb } from 'lucide-react';
 
 const Dashboard = () => {
   const sortedMembers = [...mockTeam.members].sort((a, b) => b.points - a.points);
@@ -40,7 +41,7 @@ const Dashboard = () => {
           </motion.div>
         </div>
 
-        {/* === TREE CENTERPIECE === */}
+        {/* Tree centerpiece */}
         <motion.div
           className="glass-panel p-8 mb-6 glow-green flex flex-col items-center"
           initial={{ opacity: 0, scale: 0.95 }}
@@ -63,31 +64,31 @@ const Dashboard = () => {
                 />
               </div>
               <p className="text-xs text-muted-foreground text-center mt-1.5 font-medium">
-                ⚡ {nextStageInfo.minPoints - mockTeam.points} pts to next stage
+                {nextStageInfo.minPoints - mockTeam.points} pts to next stage
               </p>
             </div>
           )}
         </motion.div>
 
-        {/* === INSIGHT STATS === */}
+        {/* Insight stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           <InsightCard
-            icon="⚡" label="Team Points" value={mockTeam.points}
-            insight={`Top 15% of all squads`}
+            icon={<Zap className="w-5 h-5" />} label="Team Points" value={mockTeam.points}
+            insight="Top 15% of all squads"
             color="primary" delay={0}
           />
           <InsightCard
-            icon="👥" label="Active Members" value={`${mockTeam.members.filter(m => !m.isInactive).length}/${mockTeam.members.length}`}
+            icon={<Users className="w-5 h-5" />} label="Active Members" value={`${mockTeam.members.filter(m => !m.isInactive).length}/${mockTeam.members.length}`}
             insight={mockTeam.members.some(m => m.isInactive) ? 'Some members need a nudge!' : 'Everyone is contributing!'}
             color={mockTeam.members.some(m => m.isInactive) ? 'destructive' : 'accent'} delay={0.05}
           />
           <InsightCard
-            icon="💻" label="Total Commits" value={totalCommits}
+            icon={<GitCommit className="w-5 h-5" />} label="Total Commits" value={totalCommits}
             insight={`${topContributor.name} leads with ${topContributor.commits}`}
             color="secondary" delay={0.1}
           />
           <InsightCard
-            icon="🧩" label="Problems Solved" value={totalProblems}
+            icon={<PuzzleIcon className="w-5 h-5" />} label="Problems Solved" value={totalProblems}
             insight="Team consistency increased 12%"
             color="accent" delay={0.15}
           />
@@ -102,19 +103,21 @@ const Dashboard = () => {
 
           {/* Right column */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Smart insight banner */}
             <motion.div
-              className="glass-panel p-4 border-l-4 border-primary"
+              className="glass-panel p-4 border-l-4 border-primary flex items-start gap-3"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <p className="text-sm font-semibold text-foreground">
-                💡 <span className="text-primary">{topContributor.name}</span> is the top contributor this week!
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                The team's productivity is up 18% compared to last week. Keep the momentum going!
-              </p>
+              <Lightbulb className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  <span className="text-primary">{topContributor.name}</span> is the top contributor this week!
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  The team's productivity is up 18% compared to last week. Keep the momentum going!
+                </p>
+              </div>
             </motion.div>
 
             <ActivityChart />
@@ -122,7 +125,7 @@ const Dashboard = () => {
             {/* Leaderboard */}
             <div>
               <h3 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
-                🏆 Leaderboard
+                <Trophy className="w-5 h-5 text-secondary" /> Leaderboard
                 <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
                   {sortedMembers.length} members
                 </span>

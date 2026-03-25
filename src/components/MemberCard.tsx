@@ -1,12 +1,13 @@
 import { type TeamMember } from '@/lib/mockData';
 import { motion } from 'framer-motion';
+import { Moon, Flame, Medal } from 'lucide-react';
 
 interface MemberCardProps {
   member: TeamMember;
   rank: number;
 }
 
-const rankEmojis = ['🥇', '🥈', '🥉'];
+const rankColors = ['text-secondary', 'text-muted-foreground', 'text-tree-brown'];
 
 export const MemberCard = ({ member, rank }: MemberCardProps) => {
   return (
@@ -19,8 +20,8 @@ export const MemberCard = ({ member, rank }: MemberCardProps) => {
         member.isInactive ? 'opacity-50 border-destructive/20' : ''
       } ${rank === 0 ? 'border-primary/30 glow-green' : ''}`}
     >
-      <span className="text-xl font-bold w-8 text-center">
-        {rank < 3 ? rankEmojis[rank] : <span className="text-muted-foreground text-base">#{rank + 1}</span>}
+      <span className={`text-xl font-bold w-8 text-center ${rankColors[rank] || 'text-muted-foreground'}`}>
+        {rank < 3 ? <Medal className={`w-5 h-5 inline ${rankColors[rank]}`} /> : `#${rank + 1}`}
       </span>
       <span className="text-2xl">{member.avatar}</span>
       <div className="flex-1 min-w-0">
@@ -28,21 +29,21 @@ export const MemberCard = ({ member, rank }: MemberCardProps) => {
           <p className="font-semibold text-foreground truncate">{member.name}</p>
           {member.isInactive && (
             <motion.span
-              className="px-2 py-0.5 text-xs rounded-full bg-destructive/15 text-destructive font-semibold border border-destructive/30"
+              className="px-2 py-0.5 text-xs rounded-full bg-destructive/15 text-destructive font-semibold border border-destructive/30 inline-flex items-center gap-1"
               animate={{ opacity: [1, 0.5, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
-              💤 Inactive
+              <Moon className="w-3 h-3" /> Inactive
             </motion.span>
           )}
           {member.streak >= 7 && (
-            <span className="px-2 py-0.5 text-xs rounded-full bg-secondary/20 text-secondary font-semibold">
-              🔥 {member.streak}d streak
+            <span className="px-2 py-0.5 text-xs rounded-full bg-secondary/20 text-secondary font-semibold inline-flex items-center gap-1">
+              <Flame className="w-3 h-3" /> {member.streak}d streak
             </span>
           )}
         </div>
         <p className="text-xs text-muted-foreground mt-0.5">
-          {member.commits} commits • {member.problemsSolved} problems • Last active {member.lastActive}
+          {member.commits} commits · {member.problemsSolved} problems · Last active {member.lastActive}
         </p>
       </div>
       <div className="text-right">

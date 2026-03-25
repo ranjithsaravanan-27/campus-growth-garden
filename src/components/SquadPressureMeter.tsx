@@ -1,15 +1,16 @@
 import { motion } from 'framer-motion';
 import { type TeamMember } from '@/lib/mockData';
+import { Flame, AlertCircle, CheckCircle, Moon } from 'lucide-react';
 
 interface SquadPressureMeterProps {
   members: TeamMember[];
 }
 
 const warningMessages = [
-  { threshold: 25, message: '🚨 Critical! Most of the squad is offline.', color: 'text-destructive' },
-  { threshold: 50, message: '⚠️ Half the squad is slacking. Rally them!', color: 'text-destructive' },
-  { threshold: 75, message: '💪 Decent pressure, but room to improve.', color: 'text-secondary' },
-  { threshold: 100, message: '🔥 Full squad active! Keep this energy!', color: 'text-primary' },
+  { threshold: 25, message: 'Critical! Most of the squad is offline.', color: 'text-destructive' },
+  { threshold: 50, message: 'Half the squad is slacking. Rally them!', color: 'text-destructive' },
+  { threshold: 75, message: 'Decent pressure, but room to improve.', color: 'text-secondary' },
+  { threshold: 100, message: 'Full squad active! Keep this energy!', color: 'text-primary' },
 ];
 
 export const SquadPressureMeter = ({ members }: SquadPressureMeterProps) => {
@@ -23,7 +24,6 @@ export const SquadPressureMeter = ({ members }: SquadPressureMeterProps) => {
       animate={{ opacity: 1, y: 0 }}
       className="glass-panel p-6 relative overflow-hidden"
     >
-      {/* Background accent */}
       <div
         className="absolute inset-0 opacity-5 rounded-2xl"
         style={{
@@ -37,7 +37,9 @@ export const SquadPressureMeter = ({ members }: SquadPressureMeterProps) => {
 
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="font-bold text-lg text-foreground">🔥 Squad Pressure</h3>
+          <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
+            <Flame className="w-5 h-5 text-primary" /> Squad Pressure
+          </h3>
           <motion.span
             className={`text-2xl font-black ${pressure >= 75 ? 'text-primary' : pressure >= 50 ? 'text-secondary' : 'text-destructive'}`}
             key={pressure}
@@ -48,7 +50,6 @@ export const SquadPressureMeter = ({ members }: SquadPressureMeterProps) => {
           </motion.span>
         </div>
 
-        {/* Pressure bar */}
         <div className="w-full h-3.5 bg-muted rounded-full overflow-hidden mb-3 relative">
           <motion.div
             className="h-full rounded-full"
@@ -73,17 +74,16 @@ export const SquadPressureMeter = ({ members }: SquadPressureMeterProps) => {
           )}
         </div>
 
-        {/* Warning message */}
         <motion.p
-          className={`text-sm font-medium mb-4 ${warning.color}`}
+          className={`text-sm font-medium mb-4 flex items-center gap-1.5 ${warning.color}`}
           key={warning.message}
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
         >
+          {pressure <= 50 ? <AlertCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
           {warning.message}
         </motion.p>
 
-        {/* Member pills */}
         <div className="flex gap-2 flex-wrap">
           {members.map((m, i) => (
             <motion.div
@@ -102,10 +102,10 @@ export const SquadPressureMeter = ({ members }: SquadPressureMeterProps) => {
               <span>{m.name.split(' ')[0]}</span>
               {m.isInactive ? (
                 <motion.span animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                  💤
+                  <Moon className="w-3 h-3" />
                 </motion.span>
               ) : (
-                <span className="text-primary">✓</span>
+                <CheckCircle className="w-3 h-3 text-primary" />
               )}
             </motion.div>
           ))}

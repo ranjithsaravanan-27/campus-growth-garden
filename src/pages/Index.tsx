@@ -13,12 +13,11 @@ const features = [
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Hero */}
       <section className="flex-1 flex items-center justify-center px-6 pt-20 pb-32">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent text-accent-foreground text-sm font-medium mb-8">
-              <span>🌱</span> Multiplayer Productivity for Students
+              <TreesIcon className="w-4 h-4 text-primary" /> Multiplayer Productivity for Students
             </div>
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
               <span className="text-foreground">Build habits.</span>
@@ -43,19 +42,17 @@ const Index = () => {
             </div>
           </motion.div>
 
-          {/* Floating tree preview */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, duration: 1 }}
             className="mt-16 animate-float"
           >
-            <span className="text-8xl">🌳</span>
+            <TreesIcon className="w-24 h-24 text-primary mx-auto" />
           </motion.div>
         </div>
       </section>
 
-      {/* Features */}
       <section className="px-6 pb-32">
         <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {features.map((f, i) => (

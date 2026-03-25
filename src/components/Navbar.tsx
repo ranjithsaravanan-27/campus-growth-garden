@@ -13,8 +13,8 @@ export const Navbar = () => {
 
   return (
     <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 glass-panel px-2 py-2 flex items-center gap-1 md:top-4 md:bottom-auto">
-      <div className="flex items-center gap-1 px-2 mr-2 border-r border-border">
-        <span className="text-lg">🌳</span>
+      <div className="flex items-center gap-1.5 px-2 mr-2 border-r border-border">
+        <TreesIcon className="w-4 h-4 text-primary" />
         <span className="font-bold text-sm text-foreground hidden md:block">Co-op Campus</span>
       </div>
       {navItems.map(({ to, icon: Icon, label }) => {
