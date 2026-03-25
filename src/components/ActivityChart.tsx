@@ -1,6 +1,7 @@
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { mockActivity } from '@/lib/mockData';
 import { motion } from 'framer-motion';
+import { TrendingUp } from 'lucide-react';
 
 export const ActivityChart = () => {
   return (
@@ -11,7 +12,9 @@ export const ActivityChart = () => {
       transition={{ delay: 0.2 }}
     >
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-foreground">📈 Weekly Activity</h3>
+        <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-primary" /> Weekly Activity
+        </h3>
         <div className="flex gap-3">
           {[
             { label: 'Commits', color: 'bg-primary' },
@@ -48,16 +51,8 @@ export const ActivityChart = () => {
               boxShadow: '0 10px 30px -10px rgba(0,0,0,0.2)',
             }}
           />
-          <Area
-            type="monotone" dataKey="commits" stroke="hsl(152 55% 35%)" strokeWidth={2.5}
-            fill="url(#gradCommits)" name="Commits"
-            animationDuration={1500}
-          />
-          <Area
-            type="monotone" dataKey="problems" stroke="hsl(42 80% 55%)" strokeWidth={2.5}
-            fill="url(#gradProblems)" name="Problems"
-            animationDuration={1500} animationBegin={300}
-          />
+          <Area type="monotone" dataKey="commits" stroke="hsl(152 55% 35%)" strokeWidth={2.5} fill="url(#gradCommits)" name="Commits" animationDuration={1500} />
+          <Area type="monotone" dataKey="problems" stroke="hsl(42 80% 55%)" strokeWidth={2.5} fill="url(#gradProblems)" name="Problems" animationDuration={1500} animationBegin={300} />
         </AreaChart>
       </ResponsiveContainer>
     </motion.div>

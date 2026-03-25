@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { Target, Link2, Code, Trophy } from 'lucide-react';
 
 interface DailyMissionProps {
   mission: string;
@@ -7,7 +8,7 @@ interface DailyMissionProps {
 }
 
 export const DailyMission = ({ mission, streakSync }: DailyMissionProps) => {
-  const [progress] = useState(68); // Mock progress
+  const [progress] = useState(68);
   const [showReward, setShowReward] = useState(false);
 
   const handleComplete = () => {
@@ -21,23 +22,23 @@ export const DailyMission = ({ mission, streakSync }: DailyMissionProps) => {
       animate={{ opacity: 1, scale: 1 }}
       className="glass-panel p-6 relative overflow-hidden"
     >
-      {/* Decorative gradient blob */}
       <div className="absolute top-0 right-0 w-40 h-40 gradient-nature opacity-[0.07] rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
 
       <div className="relative z-10">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-bold text-lg text-foreground">🎯 Daily Squad Mission</h3>
+          <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
+            <Target className="w-5 h-5 text-primary" /> Daily Squad Mission
+          </h3>
           <motion.span
-            className="text-xs font-bold px-2.5 py-1 rounded-full bg-accent text-accent-foreground border border-primary/20"
+            className="text-xs font-bold px-2.5 py-1 rounded-full bg-accent text-accent-foreground border border-primary/20 flex items-center gap-1"
             whileHover={{ scale: 1.05 }}
           >
-            🧩 Streak: {streakSync}d
+            <Link2 className="w-3 h-3" /> Streak: {streakSync}d
           </motion.span>
         </div>
 
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{mission}</p>
 
-        {/* Progress bar */}
         <div className="mb-3">
           <div className="flex justify-between text-xs mb-1.5">
             <span className="text-muted-foreground font-medium">Progress</span>
@@ -59,32 +60,29 @@ export const DailyMission = ({ mission, streakSync }: DailyMissionProps) => {
           </div>
         </div>
 
-        {/* Team tasks breakdown */}
         <div className="flex gap-3 mb-4">
           {[
-            { label: 'Commits', current: 7, target: 10, icon: '💻' },
-            { label: 'Problems', current: 3, target: 5, icon: '🧩' },
+            { label: 'Commits', current: 7, target: 10, Icon: Code },
+            { label: 'Problems', current: 3, target: 5, Icon: Target },
           ].map(task => (
             <div key={task.label} className="flex-1 bg-muted/50 rounded-xl p-2.5 text-center">
-              <span className="text-sm">{task.icon}</span>
+              <task.Icon className="w-4 h-4 mx-auto text-muted-foreground mb-1" />
               <p className="text-sm font-bold text-foreground">{task.current}/{task.target}</p>
               <p className="text-[10px] text-muted-foreground">{task.label}</p>
             </div>
           ))}
         </div>
 
-        {/* Demo complete button */}
         <motion.button
           onClick={handleComplete}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="w-full py-2.5 rounded-xl gradient-nature text-primary-foreground font-semibold text-sm shadow-md hover:shadow-lg transition-shadow"
         >
-          {progress >= 100 ? '🎉 Claim Reward!' : '⚡ Simulate Progress'}
+          {progress >= 100 ? 'Claim Reward!' : 'Simulate Progress'}
         </motion.button>
       </div>
 
-      {/* Reward celebration overlay */}
       {showReward && (
         <motion.div
           className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-2xl z-20"
@@ -98,17 +96,16 @@ export const DailyMission = ({ mission, streakSync }: DailyMissionProps) => {
             animate={{ scale: [0, 1.2, 1] }}
             transition={{ duration: 0.5, times: [0, 0.7, 1] }}
           >
-            <motion.span
-              className="text-6xl block mb-2"
+            <motion.div
+              className="mx-auto mb-2"
               animate={{ rotate: [0, -10, 10, 0] }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              🏆
-            </motion.span>
+              <Trophy className="w-16 h-16 text-secondary mx-auto" />
+            </motion.div>
             <p className="font-bold text-foreground text-lg">+50 Bonus Points!</p>
             <p className="text-sm text-muted-foreground">Mission Complete!</p>
           </motion.div>
-          {/* Confetti particles */}
           {[...Array(12)].map((_, i) => (
             <motion.div
               key={i}

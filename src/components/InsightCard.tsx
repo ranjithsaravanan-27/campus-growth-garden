@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
+import { type ReactNode } from 'react';
 
 interface InsightCardProps {
-  icon: string;
+  icon: ReactNode;
   label: string;
   value: string | number;
   insight: string;
@@ -11,25 +12,21 @@ interface InsightCardProps {
 
 const colorMap = {
   primary: {
-    bg: 'bg-primary/10',
     border: 'border-primary/20',
     text: 'text-primary',
     glow: 'shadow-[0_0_20px_hsl(152_55%_35%/0.15)]',
   },
   secondary: {
-    bg: 'bg-secondary/10',
     border: 'border-secondary/20',
     text: 'text-secondary',
     glow: 'shadow-[0_0_20px_hsl(42_80%_55%/0.15)]',
   },
   destructive: {
-    bg: 'bg-destructive/10',
     border: 'border-destructive/20',
     text: 'text-destructive',
     glow: '',
   },
   accent: {
-    bg: 'bg-accent',
     border: 'border-primary/15',
     text: 'text-accent-foreground',
     glow: '',
@@ -48,10 +45,10 @@ export const InsightCard = ({ icon, label, value, insight, color, delay = 0 }: I
       className={`glass-panel p-5 border ${c.border} ${c.glow} cursor-default transition-shadow hover:shadow-xl`}
     >
       <div className="flex items-start justify-between mb-2">
-        <span className="text-2xl">{icon}</span>
+        <div className={`${c.text}`}>{icon}</div>
         <motion.span
           className={`text-3xl font-black ${c.text}`}
-          key={value}
+          key={String(value)}
           initial={{ scale: 1.3, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: delay + 0.2 }}

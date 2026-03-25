@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { mockTeam } from '@/lib/mockData';
-import { Copy, Check, UserPlus, Users } from 'lucide-react';
+import { Copy, Check, UserPlus, Users, Flame } from 'lucide-react';
 
 const Team = () => {
   const [copied, setCopied] = useState(false);
@@ -22,7 +22,6 @@ const Team = () => {
         <h1 className="text-3xl font-bold text-foreground mb-2">Team</h1>
         <p className="text-muted-foreground mb-8">Manage your squad (2-4 members)</p>
 
-        {/* Tab buttons */}
         <div className="flex gap-2 mb-8">
           {[
             { id: 'view' as const, label: 'My Team', icon: Users },
@@ -56,16 +55,20 @@ const Team = () => {
               <div className="space-y-3">
                 {mockTeam.members.map(m => (
                   <div key={m.id} className="flex items-center gap-3 p-3 rounded-xl bg-background/50">
-                    <span className="text-2xl">{m.avatar}</span>
+                    <span className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-xs font-bold text-accent-foreground">{m.avatar}</span>
                     <div className="flex-1">
                       <p className="font-medium text-foreground">{m.name}</p>
                       <p className="text-xs text-muted-foreground">
-                        @{m.githubUsername} • {m.lastActive}
+                        @{m.githubUsername} · {m.lastActive}
                       </p>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold text-foreground">{m.points} pts</p>
-                      {m.streak > 0 && <p className="text-xs text-secondary">🔥 {m.streak}d streak</p>}
+                      {m.streak > 0 && (
+                        <p className="text-xs text-secondary inline-flex items-center gap-1">
+                          <Flame className="w-3 h-3" /> {m.streak}d streak
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}

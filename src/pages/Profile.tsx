@@ -6,7 +6,7 @@ import { Github, Code2, CheckCircle, ExternalLink } from 'lucide-react';
 import { mockTeam } from '@/lib/mockData';
 
 const Profile = () => {
-  const user = mockTeam.members[0]; // Demo user
+  const user = mockTeam.members[0];
   const [leetcodeInput, setLeetcodeInput] = useState(user.leetcodeUsername);
   const [verified, setVerified] = useState(true);
 
@@ -21,9 +21,8 @@ const Profile = () => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
         <h1 className="text-3xl font-bold text-foreground">Profile</h1>
 
-        {/* User info */}
         <div className="glass-panel p-6 flex items-center gap-4">
-          <span className="text-5xl">{user.avatar}</span>
+          <span className="w-16 h-16 rounded-full bg-accent flex items-center justify-center text-xl font-bold text-accent-foreground">{user.avatar}</span>
           <div>
             <h2 className="text-xl font-bold text-foreground">{user.name}</h2>
             <p className="text-sm text-muted-foreground">alex.chen@university.edu</p>
@@ -38,7 +37,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* GitHub stats */}
         <div className="glass-panel p-6">
           <div className="flex items-center gap-2 mb-4">
             <Github className="w-5 h-5 text-foreground" />
@@ -60,7 +58,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* LeetCode */}
         <div className="glass-panel p-6">
           <div className="flex items-center gap-2 mb-4">
             <Code2 className="w-5 h-5 text-foreground" />
@@ -106,7 +103,6 @@ const Profile = () => {
           )}
         </div>
 
-        {/* Points summary */}
         <div className="glass-panel p-6 text-center">
           <p className="text-sm text-muted-foreground mb-1">Total Productivity Points</p>
           <p className="text-4xl font-bold text-gradient-nature">{user.points}</p>
