@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 interface DailyMissionProps {
   mission: string;
@@ -6,20 +7,128 @@ interface DailyMissionProps {
 }
 
 export const DailyMission = ({ mission, streakSync }: DailyMissionProps) => {
+  const [progress] = useState(68); // Mock progress
+  const [showReward, setShowReward] = useState(false);
+
+  const handleComplete = () => {
+    setShowReward(true);
+    setTimeout(() => setShowReward(false), 2500);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="glass-panel p-5 relative overflow-hidden"
+      className="glass-panel p-6 relative overflow-hidden"
     >
-      <div className="absolute top-0 right-0 w-32 h-32 gradient-nature opacity-10 rounded-full -translate-y-1/2 translate-x-1/2" />
-      <h3 className="font-semibold text-foreground mb-2">🎯 Daily Squad Mission</h3>
-      <p className="text-sm text-muted-foreground mb-3">{mission}</p>
-      <div className="flex items-center gap-2">
-        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-accent text-accent-foreground">
-          🧩 Team Streak: {streakSync} days
-        </span>
+      {/* Decorative gradient blob */}
+      <div className="absolute top-0 right-0 w-40 h-40 gradient-nature opacity-[0.07] rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-bold text-lg text-foreground">🎯 Daily Squad Mission</h3>
+          <motion.span
+            className="text-xs font-bold px-2.5 py-1 rounded-full bg-accent text-accent-foreground border border-primary/20"
+            whileHover={{ scale: 1.05 }}
+          >
+            🧩 Streak: {streakSync}d
+          </motion.span>
+        </div>
+
+        <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{mission}</p>
+
+        {/* Progress bar */}
+        <div className="mb-3">
+          <div className="flex justify-between text-xs mb-1.5">
+            <span className="text-muted-foreground font-medium">Progress</span>
+            <span className="font-bold text-foreground">{progress}%</span>
+          </div>
+          <div className="w-full h-3 bg-muted rounded-full overflow-hidden relative">
+            <motion.div
+              className="h-full rounded-full gradient-nature"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
+            />
+            <motion.div
+              className="absolute top-0 h-full w-8 rounded-full"
+              style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)' }}
+              animate={{ left: ['-10%', '110%'] }}
+              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 2 }}
+            />
+          </div>
+        </div>
+
+        {/* Team tasks breakdown */}
+        <div className="flex gap-3 mb-4">
+          {[
+            { label: 'Commits', current: 7, target: 10, icon: '💻' },
+            { label: 'Problems', current: 3, target: 5, icon: '🧩' },
+          ].map(task => (
+            <div key={task.label} className="flex-1 bg-muted/50 rounded-xl p-2.5 text-center">
+              <span className="text-sm">{task.icon}</span>
+              <p className="text-sm font-bold text-foreground">{task.current}/{task.target}</p>
+              <p className="text-[10px] text-muted-foreground">{task.label}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Demo complete button */}
+        <motion.button
+          onClick={handleComplete}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full py-2.5 rounded-xl gradient-nature text-primary-foreground font-semibold text-sm shadow-md hover:shadow-lg transition-shadow"
+        >
+          {progress >= 100 ? '🎉 Claim Reward!' : '⚡ Simulate Progress'}
+        </motion.button>
       </div>
+
+      {/* Reward celebration overlay */}
+      {showReward && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm rounded-2xl z-20"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className="text-center"
+            initial={{ scale: 0 }}
+            animate={{ scale: [0, 1.2, 1] }}
+            transition={{ duration: 0.5, times: [0, 0.7, 1] }}
+          >
+            <motion.span
+              className="text-6xl block mb-2"
+              animate={{ rotate: [0, -10, 10, 0] }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              🏆
+            </motion.span>
+            <p className="font-bold text-foreground text-lg">+50 Bonus Points!</p>
+            <p className="text-sm text-muted-foreground">Mission Complete!</p>
+          </motion.div>
+          {/* Confetti particles */}
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full"
+              style={{
+                background: ['hsl(152 55% 45%)', 'hsl(42 80% 55%)', 'hsl(42 90% 50%)', 'hsl(15 85% 55%)'][i % 4],
+                left: '50%', top: '50%',
+              }}
+              initial={{ x: 0, y: 0, opacity: 1 }}
+              animate={{
+                x: Math.cos(i * 30 * Math.PI / 180) * 100,
+                y: Math.sin(i * 30 * Math.PI / 180) * 100,
+                opacity: 0,
+                scale: [1, 0],
+              }}
+              transition={{ duration: 1, delay: 0.2, ease: 'easeOut' }}
+            />
+          ))}
+        </motion.div>
+      )}
     </motion.div>
   );
 };
